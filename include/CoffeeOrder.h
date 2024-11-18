@@ -10,6 +10,7 @@
 #include "LargeCoffee.h"
 
 #include <vector>
+#include <memory>
 
 class CoffeeOrder {
 private:
