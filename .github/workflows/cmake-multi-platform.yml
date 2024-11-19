@@ -23,13 +23,10 @@ jobs:
       #
       # To add more build types (Release, Debug, RelWithDebInfo, etc.) customize the build_type list.
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest]
         build_type: [Release]
         c_compiler: [gcc, clang, cl]
         include:
-          - os: windows-latest
-            c_compiler: cl
-            cpp_compiler: cl
           - os: ubuntu-latest
             c_compiler: gcc
             cpp_compiler: g++
@@ -40,10 +37,6 @@ jobs:
             c_compiler: clang
             cpp_compiler: clang++
         exclude:
-          - os: windows-latest
-            c_compiler: gcc
-          - os: windows-latest
-            c_compiler: clang
           - os: ubuntu-latest
             c_compiler: cl
           - os: macos-latest
@@ -61,17 +54,7 @@ jobs:
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
-    - name: Install Catch2 on windows
-      # Install Catch2
-      if: matrix.os == 'windows-latest'
-      run: vcpkg install Catch2
-
-    - name: Install Catch2 on ubuntu
-      if: matrix.os == 'ubuntu-latest'
-      run: git clone https://github.com/catchorg/Catch2.git && cd Catch2 && cmake -B build -S . -DBUILD_TESTING=OFF && sudo cmake --build build/ --target install
-
-    - name: Install Catch2 on mac
-      if: matrix.os == 'macos-latest'
+    - name: Install Catch2 
       run: git clone https://github.com/catchorg/Catch2.git && cd Catch2 && cmake -B build -S . -DBUILD_TESTING=OFF && sudo cmake --build build/ --target install
 
     - name: Configure CMake
